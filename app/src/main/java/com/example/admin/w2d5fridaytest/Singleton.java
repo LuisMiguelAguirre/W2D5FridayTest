@@ -1,14 +1,11 @@
 package com.example.admin.w2d5fridaytest;
 
-/**
- * Created by Luis Aguirre on 9/6/2017.
- */
 
 public class Singleton {
-    private static final Singleton ourInstance = new Singleton();
+    private static final Singleton Instance = new Singleton();
 
-    public static Singleton getInstance() {
-        return ourInstance;
+    public synchronized static Singleton getInstance() {
+        return Instance;
     }
 
     private Singleton() {

@@ -4,11 +4,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        validateEmail("luis.aguirre.com");
+        validateEmail("luis@.aguirre@gmail.com");
         addOddToList();
         updateViewWithHandler();
     }
@@ -36,17 +40,19 @@ public class MainActivity extends AppCompatActivity {
         MyHandler testThreadHandlerMessage = new MyHandler(handler);
         testThreadHandlerMessage.start();
     }
-    //This validations is only for .com emails, for more precise validations is better to use Regex
+    //This is only a basic validation, for more precises validations is better to use Regex
     public void validateEmail(String email) {
 
-        if (email.contains("@") && email.contains(".com")) {
+        if (email.contains("@") && email.contains(".")) {
 
             if (!email.startsWith("@") && !email.startsWith(".")) {
-                if (email.endsWith(".com")) {
+
+                if (email.charAt(email.length()-4) == '.') {
                     Log.d("TAG", "onCreate: TRUE" );
                 }
+            }else{
+                Log.d("TAG", "onCreate: FALSE");
             }
-
         }else {
             Log.d("TAG", "onCreate: FALSE");
         }
@@ -54,15 +60,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void addOddToList() {
 
+        final TextView MyID = (TextView) findViewById(R.id.MyID);
+
         List<Integer> list = new ArrayList<Integer>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
 
-            if (i % 2 != 0) {
-                list.add(i);
-                Log.d("TAG", "addOddToList: " + i);
+            Random r = new Random();
+            int value = r.nextInt(10);
+            if (value % 2 != 0) {
+                list.add(value);
+                Log.d("TAG", "addOddToList: " + value   );
             }
         }
+
+        String row="";
+        for (int i:list) {
+            row += String.valueOf(i) + Html.fromHtml("<br/>");
+        }
+
+        MyID.setText(row);
 
     }
 
